@@ -10,9 +10,17 @@ const languages = {
   'zh-TW': '繁體中文',
   'en': 'English',
   'fr': 'Français'
+} as const
+
+type LanguageCode = keyof typeof languages
+
+type Translation = {
+  title: string
+  categories: string[]
+  explore: string
 }
 
-const translations = {
+const translations: Record<LanguageCode, Translation> = {
   'zh-CN': {
     title: "猫的感觉",
     categories: ["猫砂", "猫粮", "冻干"],
@@ -36,7 +44,7 @@ const translations = {
 }
 
 export function CatsSenseComponent() {
-  const [lang, setLang] = useState('en')
+  const [lang, setLang] = useState<LanguageCode>('en')
   const t = translations[lang]
 
   return (
@@ -52,7 +60,7 @@ export function CatsSenseComponent() {
                 <ChevronDown className="w-4 h-4" />
               </button>
               <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg hidden group-hover:block">
-                {Object.entries(languages).map(([code, name]) => (
+                {(Object.entries(languages) as [LanguageCode, string][]).map(([code, name]) => (
                   <button
                     key={code}
                     className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-purple-100"
